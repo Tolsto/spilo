@@ -67,6 +67,16 @@ ENV POSTGIS_VERSION=3.4 \
 WORKDIR /builddeps
 RUN bash base.sh
 
+WORKDIR /tmp/
+RUN apt update
+RUN apt-get -y install build-essential git postgresql-server-dev-$PGVERSION libcurl4-openssl-dev
+RUN git clone https://github.com/DataDog/pg_tracing
+WORKDIR /tmp/pg_tracing
+RUN make install
+
+WORKDIR /builddeps
+
+
 # Install wal-g
 COPY --from=dependencies-builder /builddeps/wal-g /usr/local/bin/
 
